@@ -31,9 +31,10 @@ function MarketCode() {
     fetchMarketCodes();
   }, [refresh]); // refresh update시 fetch marketCode 재실행
 
+  // marketCodes update시 콘솔에 출력
   useEffect(() => {
     console.log(marketCodes);
-  }, [marketCodes]); // marketCodes update시 콘솔에 출력
+  }, [marketCodes]);
 
   return (
     <>

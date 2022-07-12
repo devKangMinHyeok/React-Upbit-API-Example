@@ -1,4 +1,4 @@
-import MarketCode from "./quotation api/getMarcketCode";
+import MarketCode from "./quotation api/getMarketCode";
 
 function App() {
   return (
