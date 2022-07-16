@@ -1,7 +1,7 @@
 import "./table.css";
 import { useEffect, useState } from "react";
 
-function MinuteCandleData() {
+function DayCandleData() {
   // isLoading, fetchedData state 세팅
   const [isLoading, setIsLoading] = useState(true); // marketcode 데이터 fetch 완료 전까지 조회 버튼 렌더링 방지
   const [fetchedData, setFetchedData] = useState();
@@ -13,11 +13,18 @@ function MinuteCandleData() {
     setCurMarketCode(evt.target.value);
   };
 
-  // unit selector
-  const MINUTE_UNITS = [1, 3, 5, 10, 15, 30, 60, 240];
-  const [currentUnit, setCurrentUnit] = useState(1);
-  const handleUnit = (evt) => {
-    setCurrentUnit(evt.target.value);
+  // date selector
+  const getTodayDate = () => {
+    const todayDate = new Date();
+    const year = todayDate.getFullYear();
+    const month = (todayDate.getMonth() + 1).toString().padStart(2, "0");
+    const date = todayDate.getDate().toString().padStart(2, "0");
+    const dateStr = year + "-" + month + "-" + date;
+    return dateStr;
+  };
+  const [startDate, setStartDate] = useState(getTodayDate());
+  const handleDate = (evt) => {
+    setStartDate(evt.target.value);
   };
 
   // counter
@@ -29,7 +36,7 @@ function MinuteCandleData() {
   // 조회 button
   const handleRequest = (evt) => {
     evt.preventDefault();
-    fetchMinuteCandle(curMarketCode, currentUnit, count);
+    fetchDayCandle(curMarketCode, startDate, count);
   };
 
   // form onSubmit 함수
@@ -50,16 +57,16 @@ function MinuteCandleData() {
     setIsLoading(false);
   }
 
-  // Upbit 분봉 fetch 함수
-  async function fetchMinuteCandle(marketCode, unit, count) {
+  // Upbit 일봉 fetch 함수
+  async function fetchDayCandle(marketCode, date, count) {
     try {
-      console.log("fetching Minute Candle Started!");
+      console.log("fetching Day Candle Started!");
       const response = await fetch(
-        `https://api.upbit.com/v1/candles/minutes/${unit}?market=${marketCode}&count=${count}`,
+        `https://api.upbit.com/v1/candles/days?market=${marketCode}&to=${date}T09:00:00Z&count=${count}&convertingPriceUnit=KRW`,
         options
       );
       const result = await response.json();
-      console.log("fetching Minute Candle Finished!");
+      console.log("fetching Day Candle Finished!");
       setFetchedData(result);
     } catch (error) {
       console.error(error);
@@ -78,7 +85,7 @@ function MinuteCandleData() {
 
   return (
     <>
-      <h3>MiniuteCandleData Example</h3>
+      <h3>DayCandleData Example</h3>
       <form onSubmit={onSubmit}>
         <div>
           <label>
@@ -103,15 +110,15 @@ function MinuteCandleData() {
         </div>
         <div>
           <label>
-            분 단위 |
-            <select onChange={handleUnit}>
-              {MINUTE_UNITS.map((min) => (
-                <option key={min} value={min}>
-                  {min}
-                </option>
-              ))}
-            </select>
-            분
+            Start Date |
+            <input
+              type="date"
+              name="startdate"
+              value={startDate}
+              max={getTodayDate()}
+              onChange={handleDate}
+            />
+            부터 (* Upbit 일봉은 매일 오전 9시 정각에 초기화)
           </label>
         </div>
         <div>
@@ -126,7 +133,7 @@ function MinuteCandleData() {
               value={count}
               onChange={handleCount}
             />
-            개의 {currentUnit}분봉 조회(1~200개)
+            개의 일봉 조회(1~200개)
           </label>
         </div>
       </form>
@@ -135,7 +142,6 @@ function MinuteCandleData() {
         <div>
           <div>
             <div>Market: {fetchedData[0].market}</div>
-            <div>Unit: {fetchedData[0].unit}분봉</div>
           </div>
           <table>
             <thead>
@@ -145,6 +151,9 @@ function MinuteCandleData() {
                 <th> 저가 </th>
                 <th> 시가 </th>
                 <th> 종가 </th>
+                <th> 종가(KRW) </th>
+                <th> 등락금액 </th>
+                <th> 등락율 </th>
                 <th> 거래량 </th>
                 <th> 거래금액 </th>
               </tr>
@@ -157,6 +166,13 @@ function MinuteCandleData() {
                   <td>{data.low_price} </td>
                   <td>{data.opening_price} </td>
                   <td>{data.trade_price} </td>
+                  <td>
+                    {data.converted_trade_price
+                      ? data.converted_trade_price
+                      : data.trade_price}
+                  </td>
+                  <td>{data.change_price} </td>
+                  <td>{data.change_rate * 100}% </td>
                   <td>{data.candle_acc_trade_volume} </td>
                   <td>{data.candle_acc_trade_price} </td>
                 </tr>
@@ -169,4 +185,4 @@ function MinuteCandleData() {
   );
 }
 
-export default MinuteCandleData;
+export default DayCandleData;
