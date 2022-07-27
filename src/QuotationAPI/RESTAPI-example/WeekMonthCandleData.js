@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import useFetchMarketCode from "../hooks/useFetchMarketCode";
 import DateSelector from "../components/DateSelector";
 import getTodayDate from "../functions/getTodayDate";
 import RequestCounter from "../components/RequestCounter";
 import MarketCodeSelector from "../components/MarketCodeSelector";
 
-function UnitSelector({ isWeek, setIsWeek }) {
+const UnitSelector = memo(function UnitSelector({ isWeek, setIsWeek }) {
   const handleUnit = (evt) => {
     const unit = evt.target.value;
     if (unit == "weeks") setIsWeek(true);
@@ -27,9 +27,11 @@ function UnitSelector({ isWeek, setIsWeek }) {
       </label>
     </div>
   );
-}
+});
 
-function WeekMonthCandleTable({ fetchedData }) {
+const WeekMonthCandleTable = memo(function WeekMonthCandleTable({
+  fetchedData,
+}) {
   return (
     <div>
       <div>
@@ -63,7 +65,7 @@ function WeekMonthCandleTable({ fetchedData }) {
       </table>
     </div>
   );
-}
+});
 
 //REST API 통신 방식 사용
 function WeekMonthCandleData() {

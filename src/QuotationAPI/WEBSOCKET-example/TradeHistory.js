@@ -4,7 +4,10 @@ import useFetchMarketCode from "../hooks/useFetchMarketCode";
 import useUpbitWebSocket from "../hooks/useUpbitWebSocket";
 import MarketCodeSelector from "../components/MarketCodeSelector";
 
-function TradeTable({ isTargetChanged, targetMarketCode }) {
+const TradeTable = memo(function TradeTable({
+  isTargetChanged,
+  targetMarketCode,
+}) {
   const [socket, isConnected, socketData] = useUpbitWebSocket(
     isTargetChanged,
     targetMarketCode,
@@ -52,7 +55,7 @@ function TradeTable({ isTargetChanged, targetMarketCode }) {
       )}
     </>
   );
-}
+});
 
 function TradeHistory() {
   // fetch all marketcode custom hook

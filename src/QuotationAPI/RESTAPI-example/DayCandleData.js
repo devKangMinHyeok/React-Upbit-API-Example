@@ -1,11 +1,11 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import useFetchMarketCode from "../hooks/useFetchMarketCode";
 import MarketCodeSelector from "../components/MarketCodeSelector";
 import DateSelector from "../components/DateSelector";
 import getTodayDate from "../functions/getTodayDate";
 import RequestCounter from "../components/RequestCounter";
 
-function DayCandleTable({ fetchedData }) {
+const DayCandleTable = memo(function DayCandleTable({ fetchedData }) {
   return (
     <div>
       <div>
@@ -49,7 +49,7 @@ function DayCandleTable({ fetchedData }) {
       </table>
     </div>
   );
-}
+});
 
 //REST API 통신 방식 사용
 function DayCandleData() {

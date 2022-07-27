@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
-function MarketCodeTable({ marketCodes }) {
+const MarketCodeTable = memo(function MarketCodeTable({ marketCodes }) {
   return (
     <table>
       <thead>
@@ -26,7 +26,7 @@ function MarketCodeTable({ marketCodes }) {
       </tbody>
     </table>
   );
-}
+});
 
 //REST API 통신 방식 사용
 function MarketCode() {

@@ -1,9 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import MarketCodeSelector from "../components/MarketCodeSelector";
 import useFetchMarketCode from "../hooks/useFetchMarketCode";
 import RequestCounter from "../components/RequestCounter";
 
-function MinuteUnitSelector({ setCurrentMinuteUnit }) {
+const MinuteUnitSelector = memo(function MinuteUnitSelector({
+  setCurrentMinuteUnit,
+}) {
   const MINUTE_UNITS = useRef([1, 3, 5, 10, 15, 30, 60, 240]);
   const handleUnit = (evt) => {
     setCurrentMinuteUnit(evt.target.value);
@@ -24,9 +26,9 @@ function MinuteUnitSelector({ setCurrentMinuteUnit }) {
       </label>
     </div>
   );
-}
+});
 
-function MinuteCandleTable({ fetchedData }) {
+const MinuteCandleTable = memo(function MinuteCandleTable({ fetchedData }) {
   return (
     <div>
       <div>
@@ -61,7 +63,7 @@ function MinuteCandleTable({ fetchedData }) {
       </table>
     </div>
   );
-}
+});
 
 //REST API 통신 방식 사용
 function MinuteCandleData() {

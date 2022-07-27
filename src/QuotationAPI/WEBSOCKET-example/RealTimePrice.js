@@ -3,6 +3,29 @@ import { memo, useEffect, useState } from "react";
 import useFetchMarketCode from "../hooks/useFetchMarketCode";
 import useUpbitWebSocket from "../hooks/useUpbitWebSocket";
 
+const RealTimePriceTable = memo(function RealTimePriceTable({ socketData }) {
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>코인</th>
+          <th>현재가</th>
+          <th>등락률</th>
+        </tr>
+      </thead>
+      <tbody>
+        {socketData.map((data) => (
+          <tr key={data.code}>
+            <td>{data.code}</td>
+            <td>{data.trade_price}</td>
+            <td>{(data.signed_change_rate * 100).toFixed(2)}%</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  );
+});
+
 function RealTimePrice() {
   // fetch all marketcode custom hook
   const [isLoading, marketCodes] = useFetchMarketCode();
@@ -37,24 +60,7 @@ function RealTimePrice() {
       <button onClick={connectButtonHandler}>{"연결종료"}</button>
       <h3>Ticker</h3>
       {socketData ? (
-        <table>
-          <thead>
-            <tr>
-              <th>코인</th>
-              <th>현재가</th>
-              <th>등락률</th>
-            </tr>
-          </thead>
-          <tbody>
-            {socketData.map((data) => (
-              <tr key={data.code}>
-                <td>{data.code}</td>
-                <td>{data.trade_price}</td>
-                <td>{(data.signed_change_rate * 100).toFixed(2)}%</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <RealTimePriceTable socketData={socketData} />
       ) : (
         <div>Ticker Loading...</div>
       )}

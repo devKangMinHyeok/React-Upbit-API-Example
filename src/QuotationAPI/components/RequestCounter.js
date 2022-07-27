@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 function RequestCounter({ count, setCount }) {
   const handleCount = (evt) => {
     const changedCount = evt.target.value;
@@ -28,4 +30,4 @@ function RequestCounter({ count, setCount }) {
   );
 }
 
-export default RequestCounter;
+export default memo(RequestCounter);

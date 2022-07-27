@@ -4,7 +4,10 @@ import MarketCodeSelector from "../components/MarketCodeSelector";
 import useFetchMarketCode from "../hooks/useFetchMarketCode";
 import useUpbitWebSocket from "../hooks/useUpbitWebSocket";
 
-function OrderTable({ isTargetChanged, targetMarketCode }) {
+const OrderTable = memo(function OrderTable({
+  isTargetChanged,
+  targetMarketCode,
+}) {
   const [socket, isConnected, socketData] = useUpbitWebSocket(
     isTargetChanged,
     targetMarketCode,
@@ -58,7 +61,7 @@ function OrderTable({ isTargetChanged, targetMarketCode }) {
       )}
     </>
   );
-}
+});
 
 function OrderBook() {
   // fetch all marketcode custom hook

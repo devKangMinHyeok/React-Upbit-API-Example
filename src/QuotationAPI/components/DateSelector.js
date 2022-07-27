@@ -1,3 +1,4 @@
+import { memo } from "react";
 import getTodayDate from "../functions/getTodayDate";
 
 function DateSelector({ startDate, setStartDate }) {
@@ -22,4 +23,4 @@ function DateSelector({ startDate, setStartDate }) {
   );
 }
 
-export default DateSelector;
+export default memo(DateSelector);
