@@ -1,8 +1,8 @@
 import { memo, useEffect, useState } from "react";
 
-import useFetchMarketCode from "./hooks/useFetchMarketCode";
-import useUpbitWebSocket from "./hooks/useUpbitWebSocket";
-import MarketCodeSelector from "./MarketCodeSelector";
+import useFetchMarketCode from "../hooks/useFetchMarketCode";
+import useUpbitWebSocket from "../hooks/useUpbitWebSocket";
+import MarketCodeSelector from "../components/MarketCodeSelector";
 
 function TradeTable({ isTargetChanged, targetMarketCode }) {
   const [socket, isConnected, socketData] = useUpbitWebSocket(

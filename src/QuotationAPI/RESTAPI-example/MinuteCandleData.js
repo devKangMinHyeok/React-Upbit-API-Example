@@ -1,8 +1,7 @@
-import "./table.css";
 import { useEffect, useRef, useState } from "react";
-import MarketCodeSelector from "./MarketCodeSelector";
-import useFetchMarketCode from "./hooks/useFetchMarketCode";
-import RequestCounter from "./RequestCounter";
+import MarketCodeSelector from "../components/MarketCodeSelector";
+import useFetchMarketCode from "../hooks/useFetchMarketCode";
+import RequestCounter from "../components/RequestCounter";
 
 function MinuteUnitSelector({ setCurrentMinuteUnit }) {
   const MINUTE_UNITS = useRef([1, 3, 5, 10, 15, 30, 60, 240]);

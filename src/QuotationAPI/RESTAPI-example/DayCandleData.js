@@ -1,36 +1,11 @@
-import "./table.css";
 import { useEffect, useState } from "react";
-import MarketCodeSelector from "./MarketCodeSelector";
-import useFetchMarketCode from "./hooks/useFetchMarketCode";
-import DateSelector from "./DateSelector";
-import getTodayDate from "./functions/getTodayDate";
-import RequestCounter from "./RequestCounter";
+import useFetchMarketCode from "../hooks/useFetchMarketCode";
+import MarketCodeSelector from "../components/MarketCodeSelector";
+import DateSelector from "../components/DateSelector";
+import getTodayDate from "../functions/getTodayDate";
+import RequestCounter from "../components/RequestCounter";
 
-function UnitSelector({ isWeek, setIsWeek }) {
-  const handleUnit = (evt) => {
-    const unit = evt.target.value;
-    if (unit == "weeks") setIsWeek(true);
-    else if (unit == "months") setIsWeek(false);
-  };
-
-  return (
-    <div>
-      <label>
-        Unit |
-        <select
-          name="unit"
-          onChange={handleUnit}
-          value={isWeek ? "weeks" : "months"}
-        >
-          <option value={"weeks"}>주봉</option>
-          <option value={"months"}>월봉</option>
-        </select>
-      </label>
-    </div>
-  );
-}
-
-function WeekMonthCandleTable({ fetchedData }) {
+function DayCandleTable({ fetchedData }) {
   return (
     <div>
       <div>
@@ -44,6 +19,9 @@ function WeekMonthCandleTable({ fetchedData }) {
             <th> 저가 </th>
             <th> 시가 </th>
             <th> 종가 </th>
+            <th> 종가(KRW) </th>
+            <th> 등락금액 </th>
+            <th> 등락율 </th>
             <th> 거래량 </th>
             <th> 거래금액 </th>
           </tr>
@@ -56,6 +34,13 @@ function WeekMonthCandleTable({ fetchedData }) {
               <td>{data.low_price} </td>
               <td>{data.opening_price} </td>
               <td>{data.trade_price} </td>
+              <td>
+                {data.converted_trade_price
+                  ? data.converted_trade_price
+                  : data.trade_price}
+              </td>
+              <td>{data.change_price} </td>
+              <td>{data.change_rate * 100}% </td>
               <td>{data.candle_acc_trade_volume} </td>
               <td>{data.candle_acc_trade_price} </td>
             </tr>
@@ -67,41 +52,36 @@ function WeekMonthCandleTable({ fetchedData }) {
 }
 
 //REST API 통신 방식 사용
-function WeekMonthCandleData() {
-  //isWeek state 세팅
-  const [isWeek, setIsWeek] = useState(true);
-
-  // MarketCodeSelector state
+function DayCandleData() {
+  // MarketCode selector
   const [isLoading, marketCodes] = useFetchMarketCode();
   const [curMarketCode, setCurMarketCode] = useState("KRW-BTC");
 
-  // dateSelector state
+  // Start Date selector
   const [startDate, setStartDate] = useState(getTodayDate());
-
-  // MarketCode selector state
-  const [fetchedData, setFetchedData] = useState();
 
   // counter
   const [count, setCount] = useState(1);
 
+  // fetchedData state 세팅
+  const [fetchedData, setFetchedData] = useState();
+
   // 조회 button
   const handleRequest = (evt) => {
-    fetchWeekCandle(isWeek, curMarketCode, startDate, count);
+    fetchDayCandle(curMarketCode, startDate, count);
   };
 
   // Upbit 일봉 fetch 함수
   const options = { method: "GET", headers: { Accept: "application/json" } };
-  async function fetchWeekCandle(isWeek, marketCode, date, count) {
+  async function fetchDayCandle(marketCode, date, count) {
     try {
-      console.log("fetching Week Candle Started!");
+      console.log("fetching Day Candle Started!");
       const response = await fetch(
-        `https://api.upbit.com/v1/candles/${
-          isWeek ? "weeks" : "months"
-        }?market=${marketCode}&to=${date}T09:00:00Z&count=${count}`,
+        `https://api.upbit.com/v1/candles/days?market=${marketCode}&to=${date}T09:00:00Z&count=${count}&convertingPriceUnit=KRW`,
         options
       );
       const result = await response.json();
-      console.log("fetching Week Candle Finished!");
+      console.log("fetching Day Candle Finished!");
       setFetchedData(result);
     } catch (error) {
       console.error(error);
@@ -115,8 +95,7 @@ function WeekMonthCandleData() {
 
   return (
     <>
-      <h3>WeekMonthCandleData Example</h3>
-      <UnitSelector isWeek={isWeek} setIsWeek={setIsWeek} />
+      <h3>DayCandleData Example</h3>
       <MarketCodeSelector
         curMarketCode={curMarketCode}
         setCurMarketCode={setCurMarketCode}
@@ -126,9 +105,9 @@ function WeekMonthCandleData() {
       <DateSelector startDate={startDate} setStartDate={setStartDate} />
       <RequestCounter count={count} setCount={setCount} />
       {isLoading ? null : <button onClick={handleRequest}>조회</button>}
-      {fetchedData ? <WeekMonthCandleTable fetchedData={fetchedData} /> : null}
+      {fetchedData ? <DayCandleTable fetchedData={fetchedData} /> : null}
     </>
   );
 }
 
-export default WeekMonthCandleData;
+export default DayCandleData;

@@ -1,9 +1,7 @@
-//WebSocket 통신 방식 사용
-
 import { memo, useEffect, useState } from "react";
 
-import useFetchMarketCode from "./hooks/useFetchMarketCode";
-import useUpbitWebSocket from "./hooks/useUpbitWebSocket";
+import useFetchMarketCode from "../hooks/useFetchMarketCode";
+import useUpbitWebSocket from "../hooks/useUpbitWebSocket";
 
 function RealTimePrice() {
   // fetch all marketcode custom hook

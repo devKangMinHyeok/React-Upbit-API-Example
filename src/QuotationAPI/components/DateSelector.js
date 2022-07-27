@@ -1,4 +1,4 @@
-import getTodayDate from "./functions/getTodayDate";
+import getTodayDate from "../functions/getTodayDate";
 
 function DateSelector({ startDate, setStartDate }) {
   const handleDate = (evt) => {
