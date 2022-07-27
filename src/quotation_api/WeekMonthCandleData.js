@@ -1,6 +1,7 @@
 import "./table.css";
 import { useEffect, useState } from "react";
 
+//REST API 통신 방식 사용
 function WeekMonthCandleData() {
   //isWeek state 세팅
   const [isWeek, setIsWeek] = useState(true);

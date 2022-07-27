@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 
+//REST API 통신 방식 사용
 function MarketCode() {
   // isLoading, marketCodes state 세팅
   const [isLoading, setIsLoading] = useState(true);

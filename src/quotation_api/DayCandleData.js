@@ -1,6 +1,7 @@
 import "./table.css";
 import { useEffect, useState } from "react";
 
+//REST API 통신 방식 사용
 function DayCandleData() {
   // isLoading, fetchedData state 세팅
   const [isLoading, setIsLoading] = useState(true); // marketcode 데이터 fetch 완료 전까지 조회 버튼 렌더링 방지
