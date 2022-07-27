@@ -1,18 +1,16 @@
 import "./table.css";
 import { useEffect, useState } from "react";
+import useFetchMarketCode from "./hooks/useFetchMarketCode";
+import MarketCodeSelector from "./MarketCodeSelector";
 
 //REST API 통신 방식 사용
 function DayCandleData() {
-  // isLoading, fetchedData state 세팅
-  const [isLoading, setIsLoading] = useState(true); // marketcode 데이터 fetch 완료 전까지 조회 버튼 렌더링 방지
+  // fetchedData state 세팅
   const [fetchedData, setFetchedData] = useState();
 
   // MarketCode selector
-  const [marketCodes, setMarketCodes] = useState();
+  const [isLoading, marketCodes] = useFetchMarketCode();
   const [curMarketCode, setCurMarketCode] = useState("KRW-BTC");
-  const handleMarket = (evt) => {
-    setCurMarketCode(evt.target.value);
-  };
 
   // date selector
   const getTodayDate = () => {
@@ -45,20 +43,8 @@ function DayCandleData() {
     evt.preventDefault();
   };
 
-  // marketcodes fetch 함수
-  const options = { method: "GET", headers: { Accept: "application/json" } };
-
-  async function fetchMarketCodes() {
-    const response = await fetch(
-      "https://api.upbit.com/v1/market/all?isDetails=false",
-      options
-    );
-    const result = await response.json();
-    setMarketCodes(result);
-    setIsLoading(false);
-  }
-
   // Upbit 일봉 fetch 함수
+  const options = { method: "GET", headers: { Accept: "application/json" } };
   async function fetchDayCandle(marketCode, date, count) {
     try {
       console.log("fetching Day Candle Started!");
@@ -74,11 +60,6 @@ function DayCandleData() {
     }
   }
 
-  // 첫 렌더링 시 marketcode 데이터 fetch
-  useEffect(() => {
-    fetchMarketCodes();
-  }, []);
-
   // fetchedData state update시 콘솔에 출력
   useEffect(() => {
     if (fetchedData) console.log(fetchedData);
@@ -88,27 +69,12 @@ function DayCandleData() {
     <>
       <h3>DayCandleData Example</h3>
       <form onSubmit={onSubmit}>
-        <div>
-          <label>
-            Market Code |
-            <select
-              name="marketcode"
-              onChange={handleMarket}
-              value={curMarketCode}
-            >
-              {marketCodes
-                ? marketCodes.map((code) => (
-                    <option
-                      key={`${code.market}_${code.english_name}`}
-                      value={code.market}
-                    >
-                      {code.market}
-                    </option>
-                  ))
-                : null}
-            </select>
-          </label>
-        </div>
+        <MarketCodeSelector
+          curMarketCode={curMarketCode}
+          setCurMarketCode={setCurMarketCode}
+          isLoading={isLoading}
+          marketCodes={marketCodes}
+        />
         <div>
           <label>
             Start Date |

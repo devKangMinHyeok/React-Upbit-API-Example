@@ -1,21 +1,19 @@
 import "./table.css";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import MarketCodeSelector from "./MarketCodeSelector";
+import useFetchMarketCode from "./hooks/useFetchMarketCode";
 
 //REST API 통신 방식 사용
 function MinuteCandleData() {
-  // isLoading, fetchedData state 세팅
-  const [isLoading, setIsLoading] = useState(true); // marketcode 데이터 fetch 완료 전까지 조회 버튼 렌더링 방지
+  // fetchedData state 세팅
   const [fetchedData, setFetchedData] = useState();
 
   // MarketCode selector
-  const [marketCodes, setMarketCodes] = useState();
+  const [isLoading, marketCodes] = useFetchMarketCode();
   const [curMarketCode, setCurMarketCode] = useState("KRW-BTC");
-  const handleMarket = (evt) => {
-    setCurMarketCode(evt.target.value);
-  };
 
   // unit selector
-  const MINUTE_UNITS = [1, 3, 5, 10, 15, 30, 60, 240];
+  const MINUTE_UNITS = useRef([1, 3, 5, 10, 15, 30, 60, 240]);
   const [currentUnit, setCurrentUnit] = useState(1);
   const handleUnit = (evt) => {
     setCurrentUnit(evt.target.value);
@@ -38,20 +36,8 @@ function MinuteCandleData() {
     evt.preventDefault();
   };
 
-  // marketcodes fetch 함수
-  const options = { method: "GET", headers: { Accept: "application/json" } };
-
-  async function fetchMarketCodes() {
-    const response = await fetch(
-      "https://api.upbit.com/v1/market/all?isDetails=false",
-      options
-    );
-    const result = await response.json();
-    setMarketCodes(result);
-    setIsLoading(false);
-  }
-
   // Upbit 분봉 fetch 함수
+  const options = { method: "GET", headers: { Accept: "application/json" } };
   async function fetchMinuteCandle(marketCode, unit, count) {
     try {
       console.log("fetching Minute Candle Started!");
@@ -67,11 +53,6 @@ function MinuteCandleData() {
     }
   }
 
-  // 첫 렌더링 시 marketcode 데이터 fetch
-  useEffect(() => {
-    fetchMarketCodes();
-  }, []);
-
   // fetchedData state update시 콘솔에 출력
   useEffect(() => {
     if (fetchedData) console.log(fetchedData);
@@ -81,32 +62,17 @@ function MinuteCandleData() {
     <>
       <h3>MiniuteCandleData Example</h3>
       <form onSubmit={onSubmit}>
-        <div>
-          <label>
-            Market Code |
-            <select
-              name="marketcode"
-              onChange={handleMarket}
-              value={curMarketCode}
-            >
-              {marketCodes
-                ? marketCodes.map((code) => (
-                    <option
-                      key={`${code.market}_${code.english_name}`}
-                      value={code.market}
-                    >
-                      {code.market}
-                    </option>
-                  ))
-                : null}
-            </select>
-          </label>
-        </div>
+        <MarketCodeSelector
+          curMarketCode={curMarketCode}
+          setCurMarketCode={setCurMarketCode}
+          isLoading={isLoading}
+          marketCodes={marketCodes}
+        />
         <div>
           <label>
             분 단위 |
             <select onChange={handleUnit}>
-              {MINUTE_UNITS.map((min) => (
+              {MINUTE_UNITS.current.map((min) => (
                 <option key={min} value={min}>
                   {min}
                 </option>
