@@ -2,6 +2,7 @@ import "./table.css";
 import { useEffect, useRef, useState } from "react";
 import MarketCodeSelector from "./MarketCodeSelector";
 import useFetchMarketCode from "./hooks/useFetchMarketCode";
+import RequestCounter from "./RequestCounter";
 
 function MinuteUnitSelector({ setCurrentMinuteUnit }) {
   const MINUTE_UNITS = useRef([1, 3, 5, 10, 15, 30, 60, 240]);
@@ -21,36 +22,6 @@ function MinuteUnitSelector({ setCurrentMinuteUnit }) {
           ))}
         </select>
         분
-      </label>
-    </div>
-  );
-}
-
-function RequestCounter({ count, setCount }) {
-  const handleCount = (evt) => {
-    const changedCount = evt.target.value;
-    if (changedCount >= 0 && changedCount <= 200) {
-      setCount(evt.target.value);
-    } else if (changedCount > 200) {
-      setCount(200);
-    } else {
-      setCount(1);
-    }
-  };
-  return (
-    <div>
-      <label>
-        Count | 최근
-        <input
-          type="number"
-          name="count"
-          min={1}
-          max={200}
-          step={1}
-          value={count}
-          onChange={handleCount}
-        />
-        개의 일봉 조회(1~200개)
       </label>
     </div>
   );

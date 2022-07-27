@@ -2,6 +2,9 @@ import "./table.css";
 import { useEffect, useState } from "react";
 import MarketCodeSelector from "./MarketCodeSelector";
 import useFetchMarketCode from "./hooks/useFetchMarketCode";
+import DateSelector from "./DateSelector";
+import getTodayDate from "./functions/getTodayDate";
+import RequestCounter from "./RequestCounter";
 
 function UnitSelector({ isWeek, setIsWeek }) {
   const handleUnit = (evt) => {
@@ -22,67 +25,6 @@ function UnitSelector({ isWeek, setIsWeek }) {
           <option value={"weeks"}>주봉</option>
           <option value={"months"}>월봉</option>
         </select>
-      </label>
-    </div>
-  );
-}
-
-const getTodayDate = () => {
-  const todayDate = new Date();
-  const year = todayDate.getFullYear();
-  const month = (todayDate.getMonth() + 1).toString().padStart(2, "0");
-  const date = todayDate.getDate().toString().padStart(2, "0");
-  const dateStr = year + "-" + month + "-" + date;
-  return dateStr;
-};
-
-function DateSelector({ startDate, setStartDate }) {
-  const handleDate = (evt) => {
-    setStartDate(evt.target.value);
-  };
-
-  return (
-    <div>
-      <label>
-        Start Date |
-        <input
-          type="date"
-          name="startdate"
-          value={startDate}
-          max={getTodayDate()}
-          onChange={handleDate}
-        />
-        부터 (* Upbit 일봉은 매일 오전 9시 정각에 초기화)
-      </label>
-    </div>
-  );
-}
-
-function RequestCounter({ count, setCount }) {
-  const handleCount = (evt) => {
-    const changedCount = evt.target.value;
-    if (changedCount >= 0 && changedCount <= 200) {
-      setCount(evt.target.value);
-    } else if (changedCount > 200) {
-      setCount(200);
-    } else {
-      setCount(1);
-    }
-  };
-  return (
-    <div>
-      <label>
-        Count | 최근
-        <input
-          type="number"
-          name="count"
-          min={1}
-          max={200}
-          step={1}
-          value={count}
-          onChange={handleCount}
-        />
-        개의 일봉 조회(1~200개)
       </label>
     </div>
   );

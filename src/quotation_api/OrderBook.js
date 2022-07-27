@@ -2,45 +2,7 @@ import { memo, useEffect, useState } from "react";
 
 import useFetchMarketCode from "./hooks/useFetchMarketCode";
 import useUpbitWebSocket from "./hooks/useUpbitWebSocket";
-
-function MarketCodeSelector({
-  curMarketCode,
-  setCurMarketCode,
-  isLoading,
-  marketCodes,
-}) {
-  const handleMarket = (evt) => {
-    setCurMarketCode(evt.target.value);
-  };
-
-  return (
-    <>
-      {!isLoading ? (
-        <div>
-          Market Code |
-          <select
-            name="marketcode"
-            onChange={handleMarket}
-            value={curMarketCode}
-          >
-            {marketCodes
-              ? marketCodes.map((code) => (
-                  <option
-                    key={`${code.market}_${code.english_name}`}
-                    value={code.market}
-                  >
-                    {code.market}
-                  </option>
-                ))
-              : null}
-          </select>
-        </div>
-      ) : (
-        "Market Code Loading..."
-      )}
-    </>
-  );
-}
+import MarketCodeSelector from "./MarketCodeSelector";
 
 function OrderTable({ isTargetChanged, targetMarketCode }) {
   const [socket, isConnected, socketData] = useUpbitWebSocket(
