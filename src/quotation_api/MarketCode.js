@@ -1,5 +1,33 @@
 import { useEffect, useState } from "react";
 
+function MarketCodeTable({ marketCodes }) {
+  return (
+    <table>
+      <thead>
+        <tr>
+          <th>마켓코드</th>
+          <th>영문명</th>
+          <th>국문명</th>
+        </tr>
+      </thead>
+      <tbody>
+        {marketCodes.map((marketCode) => {
+          return (
+            <tr
+              key={`${marketCode.market}_${marketCode.english_name}`}
+              id={`${marketCode.market}_${marketCode.english_name}`}
+            >
+              <th>{marketCode.market}</th>
+              <th>{marketCode.english_name}</th>
+              <th>{marketCode.korean_name}</th>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  );
+}
+
 //REST API 통신 방식 사용
 function MarketCode() {
   // isLoading, marketCodes state 세팅
@@ -42,33 +70,7 @@ function MarketCode() {
       <h3>getMarketCode Example</h3>
       <button onClick={handleRefresh}>Refresh</button>
       <h4>Result</h4>
-      {isLoading ? (
-        "Loading..."
-      ) : (
-        <table>
-          <thead>
-            <tr>
-              <th>마켓코드</th>
-              <th>영문명</th>
-              <th>국문명</th>
-            </tr>
-          </thead>
-          <tbody>
-            {marketCodes.map((marketCode) => {
-              return (
-                <tr
-                  key={`${marketCode.market}_${marketCode.english_name}`}
-                  id={`${marketCode.market}_${marketCode.english_name}`}
-                >
-                  <th>{marketCode.market}</th>
-                  <th>{marketCode.english_name}</th>
-                  <th>{marketCode.korean_name}</th>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      )}
+      {isLoading ? "Loading..." : <MarketCodeTable marketCodes={marketCodes} />}
     </>
   );
 }
