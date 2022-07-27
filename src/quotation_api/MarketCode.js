@@ -42,18 +42,33 @@ function MarketCode() {
       <h3>getMarketCode Example</h3>
       <button onClick={handleRefresh}>Refresh</button>
       <h4>Result</h4>
-      {isLoading
-        ? "Loading..."
-        : marketCodes.map((marketCode) => {
-            return (
-              <div
-                key={`${marketCode.market}_${marketCode.english_name}`}
-                id={`${marketCode.market}_${marketCode.english_name}`}
-              >
-                {marketCode.korean_name}
-              </div>
-            );
-          })}
+      {isLoading ? (
+        "Loading..."
+      ) : (
+        <table>
+          <thead>
+            <tr>
+              <th>마켓코드</th>
+              <th>영문명</th>
+              <th>국문명</th>
+            </tr>
+          </thead>
+          <tbody>
+            {marketCodes.map((marketCode) => {
+              return (
+                <tr
+                  key={`${marketCode.market}_${marketCode.english_name}`}
+                  id={`${marketCode.market}_${marketCode.english_name}`}
+                >
+                  <th>{marketCode.market}</th>
+                  <th>{marketCode.english_name}</th>
+                  <th>{marketCode.korean_name}</th>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
+      )}
     </>
   );
 }

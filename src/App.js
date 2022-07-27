@@ -10,9 +10,7 @@ function App() {
   return (
     <>
       <h1>React Example for Upbit</h1>
-      <RealTimePrice />
-      <OrderBook />
-      <TradeHistory />
+      <MarketCode />
     </>
   );
 }
