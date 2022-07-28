@@ -127,26 +127,27 @@ function useUpbitWebSocket(isTargetChanged, targetMarketCodes, type) {
   );
   // socket 세팅
   useEffect(() => {
+    const isTypeValid = typeChecker(type);
+    if (!isTypeValid) {
+      console.log(
+        "[Error] | input type is unknown. (input type should be 'ticker' or 'orderbook' or 'trade')"
+      );
+    }
     if (targetMarketCodes.length > 0) {
-      const isTypeValid = typeChecker(type);
-      if (!isTypeValid) {
-        console.log(
-          "[Error] | input type is unknown. (input type should be 'ticker' or 'orderbook' or 'trade')"
-        );
-      }
-
       socket.current = new WebSocket(SOCKET_URL);
       socket.current.binaryType = "arraybuffer";
 
       const socketOpenHandler = (evt) => {
         setIsConnected(true);
         console.log("[연결완료] | socket Open Type: ", type);
-        const sendContent = [
-          { ticket: "test" },
-          { type: type, codes: targetMarketCodes.map((code) => code.market) },
-        ];
-        socket.current.send(JSON.stringify(sendContent));
-        console.log("message sending done");
+        if (socket.current.readyState == 1) {
+          const sendContent = [
+            { ticket: "test" },
+            { type: type, codes: targetMarketCodes.map((code) => code.market) },
+          ];
+          socket.current.send(JSON.stringify(sendContent));
+          console.log("message sending done");
+        }
       };
 
       const socketCloseHandler = (evt) => {
@@ -171,14 +172,16 @@ function useUpbitWebSocket(isTargetChanged, targetMarketCodes, type) {
       socket.current.onclose = socketCloseHandler;
       socket.current.onerror = socketErrorHandler;
       socket.current.onmessage = socketMessageHandler;
+    }
 
-      return () => {
-        if (socket.current) {
+    return () => {
+      if (socket.current) {
+        if (socket.current.readyState != 0) {
           socket.current.close();
         }
-      };
-    }
-  }, [isTargetChanged, targetMarketCodes]);
+      }
+    };
+  }, [targetMarketCodes]);
 
   useEffect(() => {
     if (loadingBuffer.length > 0) {
