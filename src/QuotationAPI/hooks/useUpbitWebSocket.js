@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import _, { throttle } from "lodash";
+import usePrevious from "./usePrevious";
 
 const socketDataEncoder = (socketData) => {
   const encoder = new TextDecoder("utf-8");
@@ -86,10 +87,12 @@ const updateQueueBuffer = (buffer, maxSize) => {
   return copyBuffer;
 };
 
-function useUpbitWebSocket(isTargetChanged, targetMarketCodes, type) {
+function useUpbitWebSocket(targetMarketCodes, type) {
   const SOCKET_URL = "wss://api.upbit.com/websocket/v1";
   const THROTTLE_TIME = 1000;
   const MAX_LENGTH_QUEUE = 20;
+
+  const prevTargetMarketCodes = usePrevious(targetMarketCodes);
   const socket = useRef(null);
   const buffer = useRef([]);
 
@@ -102,16 +105,19 @@ function useUpbitWebSocket(isTargetChanged, targetMarketCodes, type) {
         buffer.current,
         targetMarketCodes.length
       );
+
       switch (type) {
         case "ticker":
           const sortedBuffers = sortBuffers(lastBuffers, targetMarketCodes);
           setLoadingBuffer(sortedBuffers);
           buffer.current = [];
           break;
+
         case "orderbook":
           setSocketData(...lastBuffers);
           buffer.current = [];
           break;
+
         case "trade":
           const updatedBuffer = updateQueueBuffer(
             buffer.current,
@@ -120,6 +126,7 @@ function useUpbitWebSocket(isTargetChanged, targetMarketCodes, type) {
           buffer.current = updatedBuffer;
           setSocketData(updatedBuffer);
           break;
+
         default:
           break;
       }
@@ -133,7 +140,11 @@ function useUpbitWebSocket(isTargetChanged, targetMarketCodes, type) {
         "[Error] | input type is unknown. (input type should be 'ticker' or 'orderbook' or 'trade')"
       );
     }
-    if (targetMarketCodes.length > 0) {
+    const isTargetChanged = !_.isEqual(
+      prevTargetMarketCodes,
+      targetMarketCodes
+    );
+    if (targetMarketCodes.length > 0 && isTargetChanged) {
       socket.current = new WebSocket(SOCKET_URL);
       socket.current.binaryType = "arraybuffer";
 
@@ -173,11 +184,12 @@ function useUpbitWebSocket(isTargetChanged, targetMarketCodes, type) {
       socket.current.onerror = socketErrorHandler;
       socket.current.onmessage = socketMessageHandler;
     }
-
     return () => {
       if (socket.current) {
         if (socket.current.readyState != 0) {
+          console.log("Clean up!!");
           socket.current.close();
+          socket.current = null;
         }
       }
     };

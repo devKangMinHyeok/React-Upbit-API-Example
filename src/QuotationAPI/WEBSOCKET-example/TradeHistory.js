@@ -9,7 +9,6 @@ const TradeTable = memo(function TradeTable({
   targetMarketCode,
 }) {
   const [socket, isConnected, socketData] = useUpbitWebSocket(
-    isTargetChanged,
     targetMarketCode,
     "trade"
   );

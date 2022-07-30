@@ -9,7 +9,6 @@ const OrderTable = memo(function OrderTable({
   targetMarketCode,
 }) {
   const [socket, isConnected, socketData] = useUpbitWebSocket(
-    isTargetChanged,
     targetMarketCode,
     "orderbook"
   );

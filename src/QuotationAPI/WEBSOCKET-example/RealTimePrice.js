@@ -41,7 +41,6 @@ function RealTimePrice() {
 
   // ticker socket state
   const [socket, isConnected, socketData] = useUpbitWebSocket(
-    isTargetChanged,
     targetMarketCode,
     "ticker"
   );
