@@ -7,6 +7,7 @@ import {
   selectedCoinInfoState,
   selectedCoinState,
 } from "./atom";
+import ChartTest from "./ChartTest";
 
 const CoinInfoBox = styled.div`
   height: 100%;
@@ -81,7 +82,7 @@ const ChangePriceInfoBox = styled.div`
 `;
 const PriceLogInfoArea = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1.4fr;
   column-gap: 15px;
   padding: 5px;
 `;
@@ -421,10 +422,16 @@ function OrderBook() {
                     selectedCoinInfo.prev_closing_price
                   )}
                 >
-                  <div>{data.bid_price}</div>
+                  <div>{data.bid_price.toLocaleString("ko-KR")}</div>
                   <div>
                     {getChangeRate(
-                      data.bid_price,
+                      data.ask_price,
+                      selectedCoinInfo.prev_closing_price
+                    ) > 0
+                      ? "+"
+                      : null}
+                    {getChangeRate(
+                      data.ask_price,
                       selectedCoinInfo.prev_closing_price
                     )}
                     %
@@ -462,7 +469,7 @@ const TradeTableHeader = styled.div`
 `;
 const TradeTableHeaderChild = styled.div``;
 const TradeRow = styled.div`
-  padding-left: 20px;
+  padding-left: 15px;
   padding-right: 10px;
   display: flex;
   justify-content: space-between;
@@ -525,7 +532,7 @@ function CoinDetails() {
   return (
     <DetailLayout>
       <CoinInfo />
-      <Chart />
+      <ChartTest />
       <OrderBook />
       <TradeHistory />
     </DetailLayout>
