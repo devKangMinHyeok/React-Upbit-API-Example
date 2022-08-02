@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import _, { throttle } from "lodash";
-import usePrevious from "./usePrevious";
 
 const socketDataEncoder = (socketData) => {
   const encoder = new TextDecoder("utf-8");
@@ -90,9 +89,8 @@ const updateQueueBuffer = (buffer, maxSize) => {
 function useUpbitWebSocket(targetMarketCodes, type) {
   const SOCKET_URL = "wss://api.upbit.com/websocket/v1";
   const THROTTLE_TIME = 1000;
-  const MAX_LENGTH_QUEUE = 20;
+  const MAX_LENGTH_QUEUE = 100;
 
-  const prevTargetMarketCodes = usePrevious(targetMarketCodes);
   const socket = useRef(null);
   const buffer = useRef([]);
 
@@ -140,11 +138,8 @@ function useUpbitWebSocket(targetMarketCodes, type) {
         "[Error] | input type is unknown. (input type should be 'ticker' or 'orderbook' or 'trade')"
       );
     }
-    const isTargetChanged = !_.isEqual(
-      prevTargetMarketCodes,
-      targetMarketCodes
-    );
-    if (targetMarketCodes.length > 0 && isTargetChanged) {
+
+    if (targetMarketCodes.length > 0 && !socket.current) {
       socket.current = new WebSocket(SOCKET_URL);
       socket.current.binaryType = "arraybuffer";
 
@@ -187,7 +182,6 @@ function useUpbitWebSocket(targetMarketCodes, type) {
     return () => {
       if (socket.current) {
         if (socket.current.readyState != 0) {
-          console.log("Clean up!!");
           socket.current.close();
           socket.current = null;
         }

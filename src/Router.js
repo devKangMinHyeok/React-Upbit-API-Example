@@ -10,6 +10,8 @@ import OrderBook from "./QuotationAPI/WEBSOCKET-example/OrderBook";
 import RealTimePrice from "./QuotationAPI/WEBSOCKET-example/RealTimePrice";
 import TradeHistory from "./QuotationAPI/WEBSOCKET-example/TradeHistory";
 import NavWebsocktApi from "./NavWebsocketApi";
+import TotalExample from "./QuotationAPI/TOTAL-example/TotalExample";
+import { RecoilRoot } from "recoil";
 
 function Router() {
   return (
@@ -30,6 +32,14 @@ function Router() {
             <Route path="real-time-price" element={<RealTimePrice />} />
             <Route path="trade-history" element={<TradeHistory />} />
           </Route>
+          <Route
+            path="total-example"
+            element={
+              <RecoilRoot>
+                <TotalExample />
+              </RecoilRoot>
+            }
+          />
         </Route>
       </Routes>
     </BrowserRouter>

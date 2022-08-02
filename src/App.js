@@ -12,6 +12,9 @@ function App() {
         <NavLink to="websocket-api" style={navStyle}>
           WEBSOCKET API Example
         </NavLink>
+        <NavLink to="total-example" style={navStyle}>
+          TOTAL Example
+        </NavLink>
       </nav>
       <hr />
       <Outlet />
