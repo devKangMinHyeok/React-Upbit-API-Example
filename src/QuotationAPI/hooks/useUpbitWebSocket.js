@@ -86,11 +86,13 @@ const updateQueueBuffer = (buffer, maxSize) => {
   return copyBuffer;
 };
 
-function useUpbitWebSocket(targetMarketCodes, type) {
+function useUpbitWebSocket(
+  targetMarketCodes,
+  type,
+  options = { THROTTLE_TIME: 400, MAX_LENGTH_QUEUE: 100 }
+) {
   const SOCKET_URL = "wss://api.upbit.com/websocket/v1";
-  const THROTTLE_TIME = 500;
-  const MAX_LENGTH_QUEUE = 100;
-
+  const { THROTTLE_TIME, MAX_LENGTH_QUEUE } = options;
   const socket = useRef(null);
   const buffer = useRef([]);
 

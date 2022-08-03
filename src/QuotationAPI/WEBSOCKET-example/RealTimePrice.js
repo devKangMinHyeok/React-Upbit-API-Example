@@ -40,9 +40,11 @@ function RealTimePrice() {
   }, [isLoading, marketCodes]);
 
   // ticker socket state
+  const webSocketOptions = { THROTTLE_TIME: 400 };
   const [socket, isConnected, socketData] = useUpbitWebSocket(
     targetMarketCode,
-    "ticker"
+    "ticker",
+    webSocketOptions
   );
 
   // 연결 컨트롤 버튼 이벤트 핸들러

@@ -8,9 +8,11 @@ const TradeTable = memo(function TradeTable({
   isTargetChanged,
   targetMarketCode,
 }) {
+  const webSocketOptions = { MAX_LENGTH_QUEUE: 100 };
   const [socket, isConnected, socketData] = useUpbitWebSocket(
     targetMarketCode,
-    "trade"
+    "trade",
+    webSocketOptions
   );
 
   // 연결 컨트롤 버튼 이벤트 핸들러

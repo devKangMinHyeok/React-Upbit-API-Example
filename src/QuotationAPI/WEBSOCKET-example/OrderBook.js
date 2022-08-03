@@ -8,9 +8,11 @@ const OrderTable = memo(function OrderTable({
   isTargetChanged,
   targetMarketCode,
 }) {
+  const webSocketOptions = { THROTTLE_TIME: 400 };
   const [socket, isConnected, socketData] = useUpbitWebSocket(
     targetMarketCode,
-    "orderbook"
+    "orderbook",
+    webSocketOptions
   );
 
   // 연결 컨트롤 버튼 이벤트 핸들러

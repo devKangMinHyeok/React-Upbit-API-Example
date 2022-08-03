@@ -354,9 +354,11 @@ const getMaxSize = (orderbook) => {
 function OrderBook() {
   const selectedCoin = useRecoilValue(selectedCoinState);
   const selectedCoinInfo = useRecoilValue(selectedCoinInfoState);
+  const webSocketOptions = { THROTTLE_TIME: 400 };
   const [socket, isConnected, socketData] = useUpbitWebSocket(
     selectedCoin,
-    "orderbook"
+    "orderbook",
+    webSocketOptions
   );
   const [askMaxSize, setAskMaxSize] = useState();
   const [bidMaxSize, setBidMaxSize] = useState();
@@ -517,9 +519,11 @@ const timestampToTime = (timestamp) => {
 
 function TradeHistory() {
   const selectedCoin = useRecoilValue(selectedCoinState);
+  const webSocketOptions = { MAX_LENGTH_QUEUE: 100 };
   const [socket, isConnected, socketData] = useUpbitWebSocket(
     selectedCoin,
-    "trade"
+    "trade",
+    webSocketOptions
   );
 
   return (

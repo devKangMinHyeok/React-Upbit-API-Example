@@ -130,9 +130,11 @@ const CoinBoxVolume = styled.div`
 function CoinSelector() {
   const marketCodes = useRecoilValue(marketCodesState);
   const [selectedCoin, setSelectedCoin] = useRecoilState(selectedCoinState);
+  const webSocketOptions = { THROTTLE_TIME: 400 };
   const [socket, isConnected, socketData] = useUpbitWebSocket(
     marketCodes,
-    "ticker"
+    "ticker",
+    webSocketOptions
   );
   const [selectedCoinInfo, setSelectedCoinInfo] = useRecoilState(
     selectedCoinInfoState
