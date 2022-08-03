@@ -15,7 +15,7 @@ import { RecoilRoot } from "recoil";
 
 function Router() {
   return (
-    <BrowserRouter>
+    <BrowserRouter basename="/React-Upbit-API-Example/">
       <Routes>
         <Route path="/" element={<App />}>
           <Route path="rest-api" element={<NavRestApi />}>
