@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import useUpbitWebSocket from "../hooks/useUpbitWebSocket";
@@ -363,17 +363,31 @@ function OrderBook() {
   const [askMaxSize, setAskMaxSize] = useState();
   const [bidMaxSize, setBidMaxSize] = useState();
 
+  const [scrollOn, setScrollOn] = useState(false);
+  const orderBookContainerRef = useRef();
+
   useEffect(() => {
     if (socketData) {
       const orderbook = socketData.orderbook_units;
       const [maxAskSize, maxBidSize] = getMaxSize(orderbook);
       setAskMaxSize(maxAskSize);
       setBidMaxSize(maxBidSize);
+      if (!scrollOn) {
+        orderBookContainerRef.current.scrollTop =
+          orderBookContainerRef.current.scrollHeight / 3;
+      }
     }
   }, [socketData]);
 
+  const scrollEventHandler = () => {
+    setScrollOn(true);
+  };
+
   return (
-    <OrderBookContatiner>
+    <OrderBookContatiner
+      ref={orderBookContainerRef}
+      onScroll={scrollEventHandler}
+    >
       {socketData ? (
         <>
           <AskContainer>

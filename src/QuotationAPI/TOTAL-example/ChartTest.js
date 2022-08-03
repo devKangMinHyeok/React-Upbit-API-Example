@@ -2,6 +2,19 @@ import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { selectedCoinInfoState, selectedCoinState } from "./atom";
 import { createChart, ColorType, CrosshairMode } from "lightweight-charts";
+import styled from "styled-components";
+
+const ChartContainer = styled.div`
+  grid-column: 1 / span 3;
+  background-color: white;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  div {
+    display: block;
+    border: 1px solid white;
+
+    color: transparent;
+  }
+`;
 
 function ChartComponent({ processedData, updatedCandle }) {
   const backgroundColor = "white";
@@ -11,7 +24,6 @@ function ChartComponent({ processedData, updatedCandle }) {
   const newSeries = useRef();
   useEffect(() => {
     if (processedData) {
-      console.log("here");
       const handleResize = () => {
         chart.current.applyOptions({
           width: chartContainerRef.current.clientWidth,
@@ -19,17 +31,36 @@ function ChartComponent({ processedData, updatedCandle }) {
       };
       chart.current = createChart(chartContainerRef.current, {
         layout: {
-          background: { type: ColorType.Solid, color: backgroundColor },
+          backgroundColor,
           textColor,
         },
         width: chartContainerRef.current.clientWidth,
-        height: 200,
+        height: 250,
         crosshair: {
           mode: CrosshairMode.Normal,
         },
+        leftPriceScale: {
+          borderVisible: false,
+        },
+        rightPriceScale: {
+          borderVisible: false,
+          scaleMargins: {
+            top: 0.1,
+            bottom: 0.1,
+          },
+        },
+        timeScale: {
+          borderVisible: false,
+        },
       });
       chart.current.timeScale().fitContent();
-      newSeries.current = chart.current.addCandlestickSeries();
+      newSeries.current = chart.current.addCandlestickSeries({
+        upColor: "#D24F45",
+        wickUpColor: "#D24F45",
+        downColor: "#1261C4",
+        wickDownColor: "#1261C4",
+        borderVisible: false,
+      });
       window.addEventListener("resize", handleResize);
 
       newSeries.current.setData(processedData);
@@ -47,7 +78,11 @@ function ChartComponent({ processedData, updatedCandle }) {
     }
   }, [updatedCandle]);
 
-  return <div ref={chartContainerRef} style={{ gridColumn: "1 /span 3" }} />;
+  return (
+    <ChartContainer>
+      <div ref={chartContainerRef}></div>
+    </ChartContainer>
+  );
 }
 
 function ChartTest() {
