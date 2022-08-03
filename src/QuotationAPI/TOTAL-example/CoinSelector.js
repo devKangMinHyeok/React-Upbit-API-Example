@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { memo, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
 import useUpbitWebSocket from "../hooks/useUpbitWebSocket";
@@ -214,4 +214,4 @@ function CoinSelector() {
   );
 }
 
-export default CoinSelector;
+export default memo(CoinSelector);

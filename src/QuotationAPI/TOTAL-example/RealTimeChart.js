@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { selectedCoinInfoState, selectedCoinState } from "./atom";
 import { createChart, ColorType, CrosshairMode } from "lightweight-charts";
@@ -84,7 +84,7 @@ function ChartComponent({ processedData, updatedCandle }) {
   );
 }
 
-function Chart() {
+function RealTimeChart() {
   const selectedCoin = useRecoilValue(selectedCoinState);
   const selectedCoinInfo = useRecoilValue(selectedCoinInfoState);
   const [fetchedData, setFetchedData] = useState();
@@ -152,4 +152,4 @@ function Chart() {
   );
 }
 
-export default Chart;
+export default memo(RealTimeChart);
