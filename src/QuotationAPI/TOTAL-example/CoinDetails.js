@@ -82,7 +82,7 @@ const ChangePriceInfoBox = styled.div`
 `;
 const PriceLogInfoArea = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1fr 1.4fr;
+  grid-template-columns: 1fr 1fr 1.2fr;
   column-gap: 15px;
   padding: 5px;
 `;
@@ -113,9 +113,7 @@ const LowPrice52WeekInfoBox = styled.div`
   font-weight: 600;
 `;
 const AccTradeVolume24hInfoBox = styled.div``;
-const AccTradePrice24hInfoBox = styled.div`
-  font-size: 11px;
-`;
+const AccTradePrice24hInfoBox = styled.div``;
 
 function CoinInfo() {
   const selectedCoin = useRecoilValue(selectedCoinState);
@@ -222,7 +220,7 @@ function CoinInfo() {
 }
 
 const OrderBookContatiner = styled.div`
-  grid-column: 1 / span 2;
+  grid-row: span 2;
   background-color: white;
   height: 100%;
   overflow: overlay;
@@ -471,6 +469,7 @@ function OrderBook() {
 }
 
 const TradeHistoryContainer = styled.div`
+  grid-column: 1 / span 2;
   background-color: white;
   font-size: 11px;
   overflow: overlay;
@@ -478,18 +477,26 @@ const TradeHistoryContainer = styled.div`
   padding: 5px;
 `;
 const TradeTableHeader = styled.div`
-  display: flex;
-  justify-content: space-around;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   padding-bottom: 2px;
   border-bottom: lightgrey 1px solid;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 const TradeTableHeaderChild = styled.div``;
 const TradeRow = styled.div`
-  padding-left: 15px;
-  padding-right: 10px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
   border-bottom: whitesmoke 1px solid;
+  div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 `;
 
 const TradeLogBox = styled.div`
@@ -521,6 +528,7 @@ function TradeHistory() {
         <TradeTableHeaderChild>체결시간</TradeTableHeaderChild>
         <TradeTableHeaderChild>체결가격</TradeTableHeaderChild>
         <TradeTableHeaderChild>체결량</TradeTableHeaderChild>
+        <TradeTableHeaderChild>체결금액</TradeTableHeaderChild>
       </TradeTableHeader>
       {socketData
         ? [...socketData].reverse().map((data, index) => (
@@ -528,9 +536,20 @@ function TradeHistory() {
               <TradeTimeBox>
                 {timestampToTime(data.trade_timestamp)}
               </TradeTimeBox>
-              <TradePriceBox>{data.trade_price}</TradePriceBox>
+              <TradePriceBox>
+                {data.trade_price
+                  ? data.trade_price.toLocaleString("ko-KR")
+                  : null}
+                원
+              </TradePriceBox>
               <TradeSizeBox tradeType={data.ask_bid}>
                 {data.trade_volume}
+              </TradeSizeBox>
+              <TradeSizeBox tradeType={data.ask_bid}>
+                {Math.ceil(data.trade_price * data.trade_volume).toLocaleString(
+                  "ko-KR"
+                )}
+                원
               </TradeSizeBox>
             </TradeRow>
           ))
@@ -544,8 +563,9 @@ const DetailLayout = styled.div`
   background-color: whitesmoke;
   padding: 5px;
   display: grid;
-  gap: 10px;
-  grid-template-columns: 1fr 1fr 1.5fr;
+  gap: 5px;
+  grid-template-columns: 1fr 1fr 1.1fr;
+  grid-template-rows: 105px 300px 1fr;
 `;
 
 function CoinDetails() {

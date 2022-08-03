@@ -5,8 +5,9 @@ import { createChart, ColorType, CrosshairMode } from "lightweight-charts";
 import styled from "styled-components";
 
 const ChartContainer = styled.div`
-  grid-column: 1 / span 3;
-
+  grid-column: 1 / span 2;
+  width: 100%;
+  height: 300;
   background-color: white;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   div {

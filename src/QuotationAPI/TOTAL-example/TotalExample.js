@@ -10,7 +10,7 @@ const DisplayBoard = styled.main`
   width: 1250px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 350px 900px;
+  grid-template-columns: 300px 950px;
   background-color: whitesmoke;
 
   font-family: Arial, Helvetica, sans-serif;
