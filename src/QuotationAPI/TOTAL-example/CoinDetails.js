@@ -235,7 +235,7 @@ const AskContainer = styled.div`
 
 const AskBidSection = styled.div`
   display: grid;
-  grid-template-columns: 1fr 1.5fr 1fr;
+  grid-template-columns: 1fr 1.2fr 1fr;
 `;
 
 const AskSection = styled(AskBidSection)`
@@ -418,20 +418,20 @@ function OrderBook() {
                 <BlankBox></BlankBox>
                 <OrderPriceBox
                   changeType={getChangeType(
-                    data.ask_price,
+                    data.bid_price,
                     selectedCoinInfo.prev_closing_price
                   )}
                 >
                   <div>{data.bid_price.toLocaleString("ko-KR")}</div>
                   <div>
                     {getChangeRate(
-                      data.ask_price,
+                      data.bid_price,
                       selectedCoinInfo.prev_closing_price
                     ) > 0
                       ? "+"
                       : null}
                     {getChangeRate(
-                      data.ask_price,
+                      data.bid_price,
                       selectedCoinInfo.prev_closing_price
                     )}
                     %
@@ -466,6 +466,8 @@ const TradeHistoryContainer = styled.div`
 const TradeTableHeader = styled.div`
   display: flex;
   justify-content: space-around;
+  padding-bottom: 2px;
+  border-bottom: lightgrey 1px solid;
 `;
 const TradeTableHeaderChild = styled.div``;
 const TradeRow = styled.div`
@@ -473,6 +475,7 @@ const TradeRow = styled.div`
   padding-right: 10px;
   display: flex;
   justify-content: space-between;
+  border-bottom: whitesmoke 1px solid;
 `;
 
 const TradeLogBox = styled.div`
@@ -525,7 +528,7 @@ const DetailLayout = styled.div`
   padding: 5px;
   display: grid;
   gap: 10px;
-  grid-template-columns: 1.6fr 1.6fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 `;
 
 function CoinDetails() {

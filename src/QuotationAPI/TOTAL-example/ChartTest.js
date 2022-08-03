@@ -1,67 +1,70 @@
 import { useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
-import { selectedCoinState } from "./atom";
-import { createChart, ColorType } from "lightweight-charts";
+import { selectedCoinInfoState, selectedCoinState } from "./atom";
+import { createChart, ColorType, CrosshairMode } from "lightweight-charts";
 
-function ChartComponent({ processedData }) {
-  const chartContainerRef = useRef();
-
+function ChartComponent({ processedData, updatedCandle }) {
   const backgroundColor = "white";
-  const lineColor = "#2962FF";
   const textColor = "black";
-  const areaTopColor = "#2962FF";
-  const areaBottomColor = "rgba(41, 98, 255, 0.28)";
-
+  const chartContainerRef = useRef();
+  const chart = useRef();
+  const newSeries = useRef();
   useEffect(() => {
     if (processedData) {
+      console.log("here");
       const handleResize = () => {
-        chart.applyOptions({ width: chartContainerRef.current.clientWidth });
+        chart.current.applyOptions({
+          width: chartContainerRef.current.clientWidth,
+        });
       };
-
-      const chart = createChart(chartContainerRef.current, {
+      chart.current = createChart(chartContainerRef.current, {
         layout: {
           background: { type: ColorType.Solid, color: backgroundColor },
           textColor,
         },
         width: chartContainerRef.current.clientWidth,
-        height: 300,
+        height: 200,
+        crosshair: {
+          mode: CrosshairMode.Normal,
+        },
       });
-      chart.timeScale().fitContent();
-
-      const newSeries = chart.addAreaSeries({
-        lineColor,
-        topColor: areaTopColor,
-        bottomColor: areaBottomColor,
-      });
-      newSeries.setData(processedData);
-
+      chart.current.timeScale().fitContent();
+      newSeries.current = chart.current.addCandlestickSeries();
       window.addEventListener("resize", handleResize);
+
+      newSeries.current.setData(processedData);
 
       return () => {
         window.removeEventListener("resize", handleResize);
-
-        chart.remove();
+        chart.current.remove();
       };
     }
   }, [processedData]);
+
+  useEffect(() => {
+    if (updatedCandle && newSeries.current) {
+      newSeries.current.update(updatedCandle);
+    }
+  }, [updatedCandle]);
 
   return <div ref={chartContainerRef} style={{ gridColumn: "1 /span 3" }} />;
 }
 
 function ChartTest() {
   const selectedCoin = useRecoilValue(selectedCoinState);
+  const selectedCoinInfo = useRecoilValue(selectedCoinInfoState);
   const [fetchedData, setFetchedData] = useState();
   const [processedData, setProcessedData] = useState();
+  const [updatedCandle, setUpdatedCandle] = useState();
+
   const options = { method: "GET", headers: { Accept: "application/json" } };
   async function fetchDayCandle(marketCode, date, count) {
     try {
-      console.log("fetching Day Candle Started!");
       const response = await fetch(
         `https://api.upbit.com/v1/candles/days?market=${marketCode}&to=${date}T09:00:00Z&count=${count}&convertingPriceUnit=KRW`,
         options
       );
       const result = await response.json();
-      console.log("fetching Day Candle Finished!");
       setFetchedData(result);
     } catch (error) {
       console.error(error);
@@ -79,18 +82,40 @@ function ChartTest() {
       const processed = [...fetchedData].reverse().map((data) => {
         return {
           time: data.candle_date_time_kst,
-          // open: data.opening_price,
-          // high: data.high_price,
-          // low: data.low_price,
-          // close: data.trade_price,
-          value: data.trade_price,
+          open: data.opening_price,
+          high: data.high_price,
+          low: data.low_price,
+          close: data.trade_price,
         };
       });
       setProcessedData(processed);
     }
   }, [fetchedData]);
 
-  return <ChartComponent processedData={processedData}></ChartComponent>;
+  useEffect(() => {
+    if (selectedCoinInfo) {
+      setUpdatedCandle({
+        time: selectedCoinInfo.trade_date
+          ? {
+              day: selectedCoinInfo.trade_date.slice(6, 8),
+              month: selectedCoinInfo.trade_date.slice(4, 6),
+              year: selectedCoinInfo.trade_date.slice(0, 4),
+            }
+          : null,
+        open: selectedCoinInfo.opening_price,
+        high: selectedCoinInfo.high_price,
+        low: selectedCoinInfo.low_price,
+        close: selectedCoinInfo.trade_price,
+      });
+    }
+  }, [selectedCoinInfo]);
+
+  return (
+    <ChartComponent
+      processedData={processedData}
+      updatedCandle={updatedCandle}
+    ></ChartComponent>
+  );
 }
 
 export default ChartTest;
