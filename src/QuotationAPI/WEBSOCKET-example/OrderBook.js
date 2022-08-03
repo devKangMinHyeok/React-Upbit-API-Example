@@ -4,10 +4,7 @@ import MarketCodeSelector from "../components/MarketCodeSelector";
 import useFetchMarketCode from "../hooks/useFetchMarketCode";
 import useUpbitWebSocket from "../hooks/useUpbitWebSocket";
 
-const OrderTable = memo(function OrderTable({
-  isTargetChanged,
-  targetMarketCode,
-}) {
+const OrderTable = memo(function OrderTable({ targetMarketCode }) {
   const webSocketOptions = { THROTTLE_TIME: 400 };
   const [socket, isConnected, socketData] = useUpbitWebSocket(
     targetMarketCode,
@@ -69,7 +66,6 @@ function OrderBook() {
   const [isLoading, marketCodes] = useFetchMarketCode();
   const [curMarketCode, setCurMarketCode] = useState("KRW-BTC");
   const [targetMarketCode, setTargetMarketCode] = useState([]);
-  const [isTargetChanged, setIsTargetChanged] = useState(false);
 
   useEffect(() => {
     if (marketCodes) {
@@ -77,7 +73,6 @@ function OrderBook() {
         (code) => code.market === curMarketCode
       );
       setTargetMarketCode(target);
-      setIsTargetChanged((prev) => !prev);
     }
   }, [curMarketCode, marketCodes]);
 
@@ -91,10 +86,7 @@ function OrderBook() {
         isLoading={isLoading}
         marketCodes={marketCodes}
       />
-      <OrderTable
-        isTargetChanged={isTargetChanged}
-        targetMarketCode={targetMarketCode}
-      />
+      <OrderTable targetMarketCode={targetMarketCode} />
     </>
   );
 }

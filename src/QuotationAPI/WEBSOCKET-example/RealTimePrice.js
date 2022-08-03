@@ -30,12 +30,12 @@ function RealTimePrice() {
   // fetch all marketcode custom hook
   const [isLoading, marketCodes] = useFetchMarketCode();
   const [targetMarketCode, setTargetMarketCode] = useState([]);
-  const [isTargetChanged, setIsTargetChanged] = useState(false);
 
   useEffect(() => {
     if (!isLoading && marketCodes) {
-      setTargetMarketCode(marketCodes.slice(0, 20));
-      setIsTargetChanged(true);
+      setTargetMarketCode(
+        marketCodes.filter((ele) => ele.market.includes("KRW"))
+      );
     }
   }, [isLoading, marketCodes]);
 
