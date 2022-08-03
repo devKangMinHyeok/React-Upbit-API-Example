@@ -519,7 +519,7 @@ const timestampToTime = (timestamp) => {
 
 function TradeHistory() {
   const selectedCoin = useRecoilValue(selectedCoinState);
-  const webSocketOptions = { MAX_LENGTH_QUEUE: 100 };
+  const webSocketOptions = { THROTTLE_TIME: 400, MAX_LENGTH_QUEUE: 100 };
   const [socket, isConnected, socketData] = useUpbitWebSocket(
     selectedCoin,
     "trade",
