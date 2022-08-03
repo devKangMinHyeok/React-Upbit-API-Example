@@ -497,9 +497,16 @@ const TradeLogBox = styled.div`
 `;
 
 const TradePriceBox = styled(TradeLogBox)``;
+const TradeTimeBox = styled(TradeLogBox)``;
 const TradeSizeBox = styled(TradeLogBox)`
   color: ${(props) => (props.tradeType === "ASK" ? "#EF1C1C" : "#1261C4")};
 `;
+
+const timestampToTime = (timestamp) => {
+  const time = new Date(timestamp);
+  const timeStr = time.toLocaleTimeString();
+  return timeStr;
+};
 
 function TradeHistory() {
   const selectedCoin = useRecoilValue(selectedCoinState);
@@ -511,12 +518,16 @@ function TradeHistory() {
   return (
     <TradeHistoryContainer>
       <TradeTableHeader>
+        <TradeTableHeaderChild>체결시간</TradeTableHeaderChild>
         <TradeTableHeaderChild>체결가격</TradeTableHeaderChild>
         <TradeTableHeaderChild>체결량</TradeTableHeaderChild>
       </TradeTableHeader>
       {socketData
         ? [...socketData].reverse().map((data, index) => (
             <TradeRow key={index}>
+              <TradeTimeBox>
+                {timestampToTime(data.trade_timestamp)}
+              </TradeTimeBox>
               <TradePriceBox>{data.trade_price}</TradePriceBox>
               <TradeSizeBox tradeType={data.ask_bid}>
                 {data.trade_volume}
@@ -529,12 +540,12 @@ function TradeHistory() {
 }
 
 const DetailLayout = styled.div`
-  height: 83vh;
+  height: 800px;
   background-color: whitesmoke;
   padding: 5px;
   display: grid;
   gap: 10px;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1.5fr;
 `;
 
 function CoinDetails() {

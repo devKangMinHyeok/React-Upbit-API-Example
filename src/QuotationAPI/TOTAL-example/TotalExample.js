@@ -7,10 +7,10 @@ import CoinDetails from "./CoinDetails";
 import CoinSelector from "./CoinSelector";
 
 const DisplayBoard = styled.main`
-  width: 1050px;
+  width: 1250px;
   margin: 0 auto;
   display: grid;
-  grid-template-columns: 350px 700px;
+  grid-template-columns: 350px 900px;
   background-color: whitesmoke;
 
   font-family: Arial, Helvetica, sans-serif;

@@ -6,13 +6,11 @@ import styled from "styled-components";
 
 const ChartContainer = styled.div`
   grid-column: 1 / span 3;
+
   background-color: white;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
   div {
-    display: block;
     border: 1px solid white;
-
-    color: transparent;
   }
 `;
 
@@ -35,7 +33,7 @@ function ChartComponent({ processedData, updatedCandle }) {
           textColor,
         },
         width: chartContainerRef.current.clientWidth,
-        height: 250,
+        height: 300,
         crosshair: {
           mode: CrosshairMode.Normal,
         },

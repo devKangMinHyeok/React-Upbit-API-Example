@@ -15,10 +15,10 @@ const convertMillonWon = (value) => {
 };
 
 const CoinListBox = styled.div`
+  height: 800px;
   margin: 5px;
   background-color: white;
   overflow: overlay;
-  height: 83vh;
   box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 `;
 
