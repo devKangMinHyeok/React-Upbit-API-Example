@@ -85,7 +85,7 @@ function ChartComponent({ processedData, updatedCandle }) {
   );
 }
 
-function ChartTest() {
+function Chart() {
   const selectedCoin = useRecoilValue(selectedCoinState);
   const selectedCoinInfo = useRecoilValue(selectedCoinInfoState);
   const [fetchedData, setFetchedData] = useState();
@@ -153,4 +153,4 @@ function ChartTest() {
   );
 }
 
-export default ChartTest;
+export default Chart;

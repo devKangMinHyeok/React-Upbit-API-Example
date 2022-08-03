@@ -7,7 +7,7 @@ import {
   selectedCoinInfoState,
   selectedCoinState,
 } from "./atom";
-import ChartTest from "./ChartTest";
+import Chart from "./Chart";
 
 const CoinInfoBox = styled.div`
   height: 100%;
@@ -528,14 +528,6 @@ function TradeHistory() {
   );
 }
 
-const ChartLayout = styled.div`
-  grid-column: 1 / span 3;
-`;
-
-function Chart() {
-  return <ChartLayout>Chart</ChartLayout>;
-}
-
 const DetailLayout = styled.div`
   height: 83vh;
   background-color: whitesmoke;
@@ -549,7 +541,7 @@ function CoinDetails() {
   return (
     <DetailLayout>
       <CoinInfo />
-      <ChartTest />
+      <Chart />
       <OrderBook />
       <TradeHistory />
     </DetailLayout>
