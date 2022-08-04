@@ -55,7 +55,7 @@ function TradeHistoryData() {
     fetchTradeHistory(curMarketCode, count);
   };
 
-  // Upbit 일봉 fetch 함수
+  // Upbit 체결 내역 fetch 함수
   const options = { method: "GET", headers: { Accept: "application/json" } };
   async function fetchTradeHistory(marketCode, count) {
     try {

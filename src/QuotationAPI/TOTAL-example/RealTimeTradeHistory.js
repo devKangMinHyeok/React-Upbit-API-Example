@@ -1,4 +1,5 @@
-import { memo } from "react";
+import { cloneDeep } from "lodash";
+import { memo, useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
 import useUpbitWebSocket from "../hooks/useUpbitWebSocket";
@@ -59,6 +60,49 @@ function RealTimeTradeHistory() {
     "trade",
     webSocketOptions
   );
+  const [fetchedData, setFetchedData] = useState();
+  const preFetchedCount = useRef(30);
+  const removedLength = useRef(0);
+
+  // Upbit 체결 내역 fetch 함수
+  const options = { method: "GET", headers: { Accept: "application/json" } };
+  async function fetchTradeHistory(marketCode, count) {
+    try {
+      const response = await fetch(
+        `https://api.upbit.com/v1/trades/ticks?market=${marketCode}&count=${count}`,
+        options
+      );
+      const result = await response.json();
+      setFetchedData(result);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  useEffect(() => {
+    if (selectedCoin) {
+      fetchTradeHistory(selectedCoin[0].market, preFetchedCount.current);
+      return () => {
+        setFetchedData(null);
+      };
+    }
+  }, [selectedCoin]);
+
+  useEffect(() => {
+    if (socketData && fetchedData) {
+      if (socketData.length > 0 && fetchedData.length > 0) {
+        const curRemoveLength = socketData.length - removedLength.current;
+        setFetchedData((prev) => {
+          const data = cloneDeep(prev);
+          for (let i = 0; i < curRemoveLength; i++) {
+            data.pop();
+          }
+          return data;
+        });
+        removedLength.current = removedLength.current + curRemoveLength;
+      }
+    }
+  }, [socketData]);
 
   return (
     <TradeHistoryContainer>
@@ -92,6 +136,28 @@ function RealTimeTradeHistory() {
             </TradeRow>
           ))
         : "Loading..."}
+      {fetchedData
+        ? fetchedData.slice(2).map((data, index) => (
+            <TradeRow key={index}>
+              <TradeTimeBox>{timestampToTime(data.timestamp)}</TradeTimeBox>
+              <TradePriceBox>
+                {data.trade_price
+                  ? data.trade_price.toLocaleString("ko-KR")
+                  : null}
+                원
+              </TradePriceBox>
+              <TradeSizeBox tradeType={data.ask_bid}>
+                {data.trade_volume}
+              </TradeSizeBox>
+              <TradeSizeBox tradeType={data.ask_bid}>
+                {Math.ceil(data.trade_price * data.trade_volume).toLocaleString(
+                  "ko-KR"
+                )}
+                원
+              </TradeSizeBox>
+            </TradeRow>
+          ))
+        : null}
     </TradeHistoryContainer>
   );
 }
