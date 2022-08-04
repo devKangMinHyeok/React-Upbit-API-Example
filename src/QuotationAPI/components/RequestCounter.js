@@ -24,7 +24,7 @@ function RequestCounter({ count, setCount }) {
           value={count}
           onChange={handleCount}
         />
-        개의 일봉 조회(1~200개)
+        개의 내역 조회(1~200개)
       </label>
     </div>
   );

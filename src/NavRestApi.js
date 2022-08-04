@@ -18,6 +18,9 @@ function NavRestApi() {
         <NavLink to="week-month-candle-data" style={navStyle}>
           주봉과 월봉 데이터 요청
         </NavLink>
+        <NavLink to="trade-history-data" style={navStyle}>
+          체결 내역 데이터 요청
+        </NavLink>
       </nav>
       <hr />
       <Outlet />

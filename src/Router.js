@@ -12,6 +12,7 @@ import TradeHistory from "./QuotationAPI/WEBSOCKET-example/TradeHistory";
 import NavWebsocktApi from "./NavWebsocketApi";
 import TotalExample from "./QuotationAPI/TOTAL-example/TotalExample";
 import { RecoilRoot } from "recoil";
+import TradeHistoryData from "./QuotationAPI/RESTAPI-example/TradeHistoryData";
 
 function Router() {
   return (
@@ -26,6 +27,7 @@ function Router() {
               path="week-month-candle-data"
               element={<WeekMonthCandleData />}
             />
+            <Route path="trade-history-data" element={<TradeHistoryData />} />
           </Route>
           <Route path="websocket-api" element={<NavWebsocktApi />}>
             <Route path="order-book" element={<OrderBook />} />
