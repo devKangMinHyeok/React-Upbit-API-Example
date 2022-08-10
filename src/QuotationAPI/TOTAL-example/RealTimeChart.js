@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { selectedCoinInfoState, selectedCoinState } from "./atom";
-import { createChart, ColorType, CrosshairMode } from "lightweight-charts";
+import { createChart, CrosshairMode } from "lightweight-charts";
 import styled from "styled-components";
 
 const ChartContainer = styled.div`

@@ -2,7 +2,7 @@ import { cloneDeep } from "lodash";
 import { memo, useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import useUpbitWebSocket from "../hooks/useUpbitWebSocket";
+import { useUpbitWebSocket } from "use-upbit-api";
 import { selectedCoinState } from "./atom";
 
 const TradeHistoryContainer = styled.div`
@@ -54,8 +54,8 @@ const timestampToTime = (timestamp) => {
 
 function RealTimeTradeHistory() {
   const selectedCoin = useRecoilValue(selectedCoinState);
-  const webSocketOptions = { THROTTLE_TIME: 400, MAX_LENGTH_QUEUE: 100 };
-  const [socket, isConnected, socketData] = useUpbitWebSocket(
+  const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
+  const { socket, isConnected, socketData } = useUpbitWebSocket(
     selectedCoin,
     "trade",
     webSocketOptions

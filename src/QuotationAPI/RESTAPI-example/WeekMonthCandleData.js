@@ -1,9 +1,9 @@
 import { memo, useEffect, useState } from "react";
-import useFetchMarketCode from "../hooks/useFetchMarketCode";
 import DateSelector from "../components/DateSelector";
 import getTodayDate from "../functions/getTodayDate";
 import RequestCounter from "../components/RequestCounter";
 import MarketCodeSelector from "../components/MarketCodeSelector";
+import { useFetchMarketCode } from "use-upbit-api";
 
 const UnitSelector = memo(function UnitSelector({ isWeek, setIsWeek }) {
   const handleUnit = (evt) => {
@@ -73,7 +73,7 @@ function WeekMonthCandleData() {
   const [isWeek, setIsWeek] = useState(true);
 
   // MarketCodeSelector state
-  const [isLoading, marketCodes] = useFetchMarketCode();
+  const { isLoading, marketCodes } = useFetchMarketCode();
   const [curMarketCode, setCurMarketCode] = useState("KRW-BTC");
 
   // dateSelector state

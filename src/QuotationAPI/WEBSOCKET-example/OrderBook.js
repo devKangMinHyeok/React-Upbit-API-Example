@@ -1,12 +1,10 @@
 import { memo, useEffect, useState } from "react";
+import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 import MarketCodeSelector from "../components/MarketCodeSelector";
 
-import useFetchMarketCode from "../hooks/useFetchMarketCode";
-import useUpbitWebSocket from "../hooks/useUpbitWebSocket";
-
 const OrderTable = memo(function OrderTable({ targetMarketCode }) {
-  const webSocketOptions = { THROTTLE_TIME: 400 };
-  const [socket, isConnected, socketData] = useUpbitWebSocket(
+  const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
+  const { socket, isConnected, socketData } = useUpbitWebSocket(
     targetMarketCode,
     "orderbook",
     webSocketOptions
@@ -63,7 +61,7 @@ const OrderTable = memo(function OrderTable({ targetMarketCode }) {
 
 function OrderBook() {
   // fetch all marketcode custom hook
-  const [isLoading, marketCodes] = useFetchMarketCode();
+  const { isLoading, marketCodes } = useFetchMarketCode();
   const [curMarketCode, setCurMarketCode] = useState("KRW-BTC");
   const [targetMarketCode, setTargetMarketCode] = useState([]);
 

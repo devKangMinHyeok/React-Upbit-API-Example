@@ -1,7 +1,5 @@
 import { memo, useEffect, useState } from "react";
-
-import useFetchMarketCode from "../hooks/useFetchMarketCode";
-import useUpbitWebSocket from "../hooks/useUpbitWebSocket";
+import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
 
 const RealTimePriceTable = memo(function RealTimePriceTable({ socketData }) {
   return (
@@ -28,7 +26,7 @@ const RealTimePriceTable = memo(function RealTimePriceTable({ socketData }) {
 
 function RealTimePrice() {
   // fetch all marketcode custom hook
-  const [isLoading, marketCodes] = useFetchMarketCode();
+  const { isLoading, marketCodes } = useFetchMarketCode();
   const [targetMarketCode, setTargetMarketCode] = useState([]);
 
   useEffect(() => {
@@ -40,8 +38,8 @@ function RealTimePrice() {
   }, [isLoading, marketCodes]);
 
   // ticker socket state
-  const webSocketOptions = { THROTTLE_TIME: 400 };
-  const [socket, isConnected, socketData] = useUpbitWebSocket(
+  const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
+  const { socket, isConnected, socketData } = useUpbitWebSocket(
     targetMarketCode,
     "ticker",
     webSocketOptions

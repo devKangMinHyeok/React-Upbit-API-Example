@@ -1,6 +1,6 @@
 import { memo, useEffect, useRef, useState } from "react";
+import { useFetchMarketCode } from "use-upbit-api";
 import MarketCodeSelector from "../components/MarketCodeSelector";
-import useFetchMarketCode from "../hooks/useFetchMarketCode";
 import RequestCounter from "../components/RequestCounter";
 
 const MinuteUnitSelector = memo(function MinuteUnitSelector({
@@ -71,7 +71,7 @@ function MinuteCandleData() {
   const [fetchedData, setFetchedData] = useState();
 
   // MarketCode selector
-  const [isLoading, marketCodes] = useFetchMarketCode();
+  const { isLoading, marketCodes } = useFetchMarketCode();
   const [curMarketCode, setCurMarketCode] = useState("KRW-BTC");
 
   // unit selector

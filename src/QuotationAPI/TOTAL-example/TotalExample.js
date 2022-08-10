@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useRecoilState } from "recoil";
 import styled from "styled-components";
-import useFetchMarketCode from "../hooks/useFetchMarketCode";
+import { useFetchMarketCode } from "use-upbit-api";
 import { marketCodesState } from "./atom";
 import CoinDetails from "./CoinDetails";
 import CoinSelector from "./CoinSelector";
@@ -39,7 +39,7 @@ const DisplayBoard = styled.main`
 `;
 
 function TotalExample() {
-  const [isLoading, fetchedMC] = useFetchMarketCode();
+  const { isLoading, marketCodes: fetchedMC } = useFetchMarketCode();
   const [marketCodes, setMarketCodes] = useRecoilState(marketCodesState);
 
   useEffect(() => {

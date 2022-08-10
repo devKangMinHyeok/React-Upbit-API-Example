@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from "react";
-import useFetchMarketCode from "../hooks/useFetchMarketCode";
+import { useFetchMarketCode } from "use-upbit-api";
 import MarketCodeSelector from "../components/MarketCodeSelector";
 import RequestCounter from "../components/RequestCounter";
 
@@ -41,7 +41,7 @@ const TradeHistoryTable = memo(function TradeHistoryTable({ fetchedData }) {
 //REST API 통신 방식 사용
 function TradeHistoryData() {
   // MarketCode selector
-  const [isLoading, marketCodes] = useFetchMarketCode();
+  const { isLoading, marketCodes } = useFetchMarketCode();
   const [curMarketCode, setCurMarketCode] = useState("KRW-BTC");
 
   // counter
