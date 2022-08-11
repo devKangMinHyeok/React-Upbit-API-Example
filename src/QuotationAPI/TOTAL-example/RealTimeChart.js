@@ -3,6 +3,7 @@ import { useRecoilValue } from "recoil";
 import { selectedCoinInfoState, selectedCoinState } from "./atom";
 import { createChart, CrosshairMode } from "lightweight-charts";
 import styled from "styled-components";
+import getTodayDate from "../functions/getTodayDate";
 
 const ChartContainer = styled.div`
   grid-column: 1 / span 2;
@@ -107,7 +108,7 @@ function RealTimeChart() {
 
   useEffect(() => {
     if (selectedCoin) {
-      fetchDayCandle(selectedCoin[0].market, "2022-08-02", 200);
+      fetchDayCandle(selectedCoin[0].market, getTodayDate(), 200);
     }
   }, [selectedCoin]);
 
