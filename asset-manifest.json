@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/React-Upbit-API-Example/static/css/main.9ac90d86.css",
-    "main.js": "/React-Upbit-API-Example/static/js/main.c6c8e5bc.js",
+    "main.js": "/React-Upbit-API-Example/static/js/main.be229482.js",
     "index.html": "/React-Upbit-API-Example/index.html",
     "main.9ac90d86.css.map": "/React-Upbit-API-Example/static/css/main.9ac90d86.css.map",
-    "main.c6c8e5bc.js.map": "/React-Upbit-API-Example/static/js/main.c6c8e5bc.js.map"
+    "main.be229482.js.map": "/React-Upbit-API-Example/static/js/main.be229482.js.map"
   },
   "entrypoints": [
     "static/css/main.9ac90d86.css",
-    "static/js/main.c6c8e5bc.js"
+    "static/js/main.be229482.js"
   ]
 }
