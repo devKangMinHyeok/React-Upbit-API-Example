@@ -131,11 +131,7 @@ function CoinSelector() {
   const marketCodes = useRecoilValue(marketCodesState);
   const [selectedCoin, setSelectedCoin] = useRecoilState(selectedCoinState);
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
-  const { socket, isConnected, socketData } = useWsTicker(
-    marketCodes,
-    {},
-    { debug: true }
-  );
+  const { socket, isConnected, socketData } = useWsTicker(marketCodes);
 
   const [selectedCoinInfo, setSelectedCoinInfo] = useRecoilState(
     selectedCoinInfoState

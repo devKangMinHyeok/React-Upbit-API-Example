@@ -13,7 +13,7 @@
     "react-scripts": "5.0.1",
     "recoil": "^0.7.4",
     "styled-components": "^5.3.5",
-    "use-upbit-api": "^2.0.4",
+    "use-upbit-api": "^2.0.5",
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
