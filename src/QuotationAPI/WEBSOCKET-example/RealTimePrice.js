@@ -27,13 +27,7 @@ const RealTimePriceTable = memo(function RealTimePriceTable({ socketData }) {
 function RealTimePrice() {
   // fetch all marketcode custom hook
   const { isLoading, marketCodes } = useFetchMarketCode();
-  const [targetMarketCode, setTargetMarketCode] = useState([
-    {
-      market: "KRW-BTC",
-      korean_name: "비트코인",
-      english_name: "Bitcoin",
-    },
-  ]);
+  const [targetMarketCode, setTargetMarketCode] = useState([]);
 
   // ticker socket state
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
