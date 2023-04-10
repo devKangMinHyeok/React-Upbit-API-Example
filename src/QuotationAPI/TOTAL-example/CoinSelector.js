@@ -1,7 +1,7 @@
 import { memo, useEffect } from "react";
 import { useRecoilState, useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { useUpbitWebSocket } from "use-upbit-api";
+import { useWsTicker } from "use-upbit-api";
 import {
   marketCodesState,
   selectedCoinInfoState,
@@ -131,17 +131,14 @@ function CoinSelector() {
   const marketCodes = useRecoilValue(marketCodesState);
   const [selectedCoin, setSelectedCoin] = useRecoilState(selectedCoinState);
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
-  const { socket, isConnected, socketData } = useUpbitWebSocket(
-    marketCodes,
-    "ticker",
-    webSocketOptions
-  );
+  const { socket, isConnected, socketData } = useWsTicker(marketCodes);
   const [selectedCoinInfo, setSelectedCoinInfo] = useRecoilState(
     selectedCoinInfoState
   );
 
   useEffect(() => {
     if (socketData) {
+      console.log(socketData);
       const targetData = socketData.filter(
         (data) => data.code == selectedCoin[0].market
       );

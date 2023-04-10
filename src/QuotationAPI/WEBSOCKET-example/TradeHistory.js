@@ -1,14 +1,10 @@
 import { memo, useEffect, useState } from "react";
-import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
+import { useFetchMarketCode, useWsTrade } from "use-upbit-api";
 import MarketCodeSelector from "../components/MarketCodeSelector";
 
 const TradeTable = memo(function TradeTable({ targetMarketCode }) {
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
-  const { socket, isConnected, socketData } = useUpbitWebSocket(
-    targetMarketCode,
-    "trade",
-    webSocketOptions
-  );
+  const { socket, isConnected, socketData } = useWsTrade(...targetMarketCode);
 
   // 연결 컨트롤 버튼 이벤트 핸들러
   const connectButtonHandler = (evt) => {
