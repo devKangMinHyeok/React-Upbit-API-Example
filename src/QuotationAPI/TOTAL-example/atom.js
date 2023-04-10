@@ -2,13 +2,7 @@ import { atom } from "recoil";
 
 export const marketCodesState = atom({
   key: "marketCodesState",
-  default: [
-    {
-      market: "KRW-BTC",
-      korean_name: "비트코인",
-      english_name: "Bitcoin",
-    },
-  ],
+  default: [],
 });
 
 export const selectedCoinState = atom({
