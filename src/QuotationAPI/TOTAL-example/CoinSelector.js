@@ -131,14 +131,18 @@ function CoinSelector() {
   const marketCodes = useRecoilValue(marketCodesState);
   const [selectedCoin, setSelectedCoin] = useRecoilState(selectedCoinState);
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
-  const { socket, isConnected, socketData } = useWsTicker(marketCodes);
+  const { socket, isConnected, socketData } = useWsTicker(
+    marketCodes,
+    {},
+    { debug: true }
+  );
+
   const [selectedCoinInfo, setSelectedCoinInfo] = useRecoilState(
     selectedCoinInfoState
   );
 
   useEffect(() => {
     if (socketData) {
-      console.log(socketData);
       const targetData = socketData.filter(
         (data) => data.code == selectedCoin[0].market
       );
