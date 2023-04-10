@@ -1,5 +1,5 @@
 import { memo, useEffect, useState } from "react";
-import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
+import { useFetchMarketCode, useWsTicker } from "use-upbit-api";
 
 const RealTimePriceTable = memo(function RealTimePriceTable({ socketData }) {
   return (
@@ -39,11 +39,7 @@ function RealTimePrice() {
 
   // ticker socket state
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
-  const { socket, isConnected, socketData } = useUpbitWebSocket(
-    targetMarketCode,
-    "ticker",
-    webSocketOptions
-  );
+  const { socket, isConnected, socketData } = useWsTicker(targetMarketCode);
 
   // 연결 컨트롤 버튼 이벤트 핸들러
   const connectButtonHandler = (evt) => {

@@ -1,7 +1,7 @@
 import { memo, useEffect, useRef, useState } from "react";
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import { useUpbitWebSocket } from "use-upbit-api";
+import { useWsOrderbook } from "use-upbit-api";
 import { selectedCoinInfoState, selectedCoinState } from "./atom";
 
 const OrderBookContatiner = styled.div`
@@ -140,11 +140,7 @@ function RealTimeOrderBook() {
   const selectedCoin = useRecoilValue(selectedCoinState);
   const selectedCoinInfo = useRecoilValue(selectedCoinInfoState);
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
-  const { socket, isConnected, socketData } = useUpbitWebSocket(
-    selectedCoin,
-    "orderbook",
-    webSocketOptions
-  );
+  const { socket, isConnected, socketData } = useWsOrderbook(...selectedCoin);
   const [askMaxSize, setAskMaxSize] = useState();
   const [bidMaxSize, setBidMaxSize] = useState();
 

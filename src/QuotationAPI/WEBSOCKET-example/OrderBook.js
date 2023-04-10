@@ -1,13 +1,12 @@
 import { memo, useEffect, useState } from "react";
-import { useFetchMarketCode, useUpbitWebSocket } from "use-upbit-api";
+import { useFetchMarketCode, useWsOrderbook } from "use-upbit-api";
 import MarketCodeSelector from "../components/MarketCodeSelector";
 
 const OrderTable = memo(function OrderTable({ targetMarketCode }) {
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
-  const { socket, isConnected, socketData } = useUpbitWebSocket(
-    targetMarketCode,
-    "orderbook",
-    webSocketOptions
+  console.log("targetMarketCode: ", targetMarketCode);
+  const { socket, isConnected, socketData } = useWsOrderbook(
+    ...targetMarketCode
   );
 
   // 연결 컨트롤 버튼 이벤트 핸들러
