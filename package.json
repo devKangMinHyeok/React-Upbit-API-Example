@@ -1,6 +1,6 @@
 {
   "name": "upbit_api_example_react",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "dependencies": {
     "js-queue": "^2.0.2",
@@ -24,8 +24,8 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
-    "deploy": "cp build/index.html build/404.html && gh-pages -d build",
+    "build": "react-scripts build --base /React-Upbit-API-Example/ && cp build/index.html build/404.html",
+    "manual-deploy": "cp build/index.html build/404.html && gh-pages -d build",
     "predeploy": "npm run build"
   },
   "eslintConfig": {
