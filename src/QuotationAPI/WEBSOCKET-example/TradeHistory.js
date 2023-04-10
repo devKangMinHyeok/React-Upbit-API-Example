@@ -53,7 +53,13 @@ function TradeHistory() {
   // fetch all marketcode custom hook
   const { isLoading, marketCodes } = useFetchMarketCode();
   const [curMarketCode, setCurMarketCode] = useState("KRW-BTC");
-  const [targetMarketCode, setTargetMarketCode] = useState([]);
+  const [targetMarketCode, setTargetMarketCode] = useState([
+    {
+      market: "KRW-BTC",
+      korean_name: "비트코인",
+      english_name: "Bitcoin",
+    },
+  ]);
 
   useEffect(() => {
     if (marketCodes) {

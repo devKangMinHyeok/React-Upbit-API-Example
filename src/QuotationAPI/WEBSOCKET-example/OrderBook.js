@@ -4,7 +4,7 @@ import MarketCodeSelector from "../components/MarketCodeSelector";
 
 const OrderTable = memo(function OrderTable({ targetMarketCode }) {
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
-  console.log("targetMarketCode: ", targetMarketCode);
+
   const { socket, isConnected, socketData } = useWsOrderbook(
     ...targetMarketCode
   );
@@ -62,7 +62,13 @@ function OrderBook() {
   // fetch all marketcode custom hook
   const { isLoading, marketCodes } = useFetchMarketCode();
   const [curMarketCode, setCurMarketCode] = useState("KRW-BTC");
-  const [targetMarketCode, setTargetMarketCode] = useState([]);
+  const [targetMarketCode, setTargetMarketCode] = useState([
+    {
+      market: "KRW-BTC",
+      korean_name: "비트코인",
+      english_name: "Bitcoin",
+    },
+  ]);
 
   useEffect(() => {
     if (marketCodes) {
