@@ -31,11 +31,7 @@ function RealTimePrice() {
 
   // ticker socket state
   const webSocketOptions = { throttle_time: 400, max_length_queue: 100 };
-  const { socket, isConnected, socketData } = useWsTicker(
-    targetMarketCode,
-    {},
-    { debug: true }
-  );
+  const { socket, isConnected, socketData } = useWsTicker(targetMarketCode);
 
   // 연결 컨트롤 버튼 이벤트 핸들러
   const connectButtonHandler = (evt) => {
